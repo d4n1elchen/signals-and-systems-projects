@@ -4,13 +4,19 @@ int inPin = A1;
 int input = 0;
 int output = 0;
 
+int start_time;
+
 void setup() {
   Serial.begin(9600);
+  start_time = millis();
 }
 
 void loop() {
+  time = millis() - start_time;
   input = analogRead(inPin);
   output = analogRead(outPin);
+  Serial.print(time);
+  Serial.print(" ");
   Serial.print(volt(input));
   Serial.print(" ");
   Serial.println(volt(output));
