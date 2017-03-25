@@ -9,6 +9,7 @@ for i=1:5
     data = load([name{k}, num2str(i), '.txt']);
     time = data(:,3);
     origin = data(:,5);
+    offset = median(origin(1:500));
     
     % Plot original data
     subplot(5,2,(i-1)*2+1);
@@ -17,13 +18,15 @@ for i=1:5
     ylabel('Amplitude');
     
     % Plot fft
-    L = size(time, 1);
-    Fs = L/time(end)*1000;
-    f = Fs*(0:(L/2))/L;
-    Y = fft(origin-3.666);
-    P = abs(Y(1:size(Y)/2+1));
+    L = size(time, 1);              % Data length
+    Fs = L/time(end)*1000;          % Sample rate
+    f = Fs*(0:(L/2))/L;             % Frequency vector
+    %w = hanning(L);                 % Window function
+    w = 1;                          % Without window function
+    Y = fft(w.*(origin-offset));     % FFT
+    P = 2*abs(Y(2:size(Y)/2+2));    % Get half of result
     
-    [pks,locs] = findpeaks(abs(2*Y(1:size(Y)/2+1)),'MinPeakDistance',200);
+    [pks,locs] = findpeaks(P,'MinPeakDistance',300);
     
     subplot(5,2,(i-1)*2+2);
     plot(f, P, f(locs), pks, 'or');
