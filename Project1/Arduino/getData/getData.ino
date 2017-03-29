@@ -1,16 +1,18 @@
-int outPin = A0;
-int inPin = A1;
+int oriPin = A0;
+/* int ampPin = A1; */
 
-int input = 0;
-int output = 0;
+int origin = 0;
+/* int amped = 0; */
 
 long start_time;
 
 int btnPin = 4;
+int btnPlotPin = 5;
 
 void setup() {
   Serial.begin(115200);
   pinMode(btnPin, INPUT);
+  pinMode(btnPlotPin, INPUT);
 }
 
 void loop() {
@@ -18,13 +20,22 @@ void loop() {
     start_time = millis();
     while(digitalRead(btnPin)) {
       long time = millis() - start_time;
-      input = analogRead(inPin);
-      output = analogRead(outPin);
+      origin = analogRead(oriPin);
+      /* amped = analogRead(ampPin); */
       Serial.print(time);
       Serial.print(" ");
-      Serial.print(volt(input));
-      Serial.print(" ");
-      Serial.println(volt(output));
+      Serial.println(volt(origin));
+      /* Serial.print(" "); */
+      /* Serial.println(volt(amped)); */
+    }
+  }
+  if(digitalRead(btnPlotPin)) {
+    while(digitalRead(btnPlotPin)) {
+      origin = analogRead(oriPin);
+      /* amped = analogRead(ampPin); */
+      Serial.println(volt(origin));
+      /* Serial.print(" "); */
+      /* Serial.println(volt(amped)); */
     }
   }
   /* delay(10); */
