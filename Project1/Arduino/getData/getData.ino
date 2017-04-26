@@ -17,9 +17,8 @@ void setup() {
 
 void loop() {
   if(digitalRead(btnPin)) {
-    start_time = micros();
     while(digitalRead(btnPin)) {
-      long time = micros() - start_time;
+      long time = micros();
       origin = analogRead(oriPin);
       /* amped = analogRead(ampPin); */
       Serial.print(time);

@@ -22,7 +22,7 @@ for i=1:5
     Fs = L/time(end)*1000;          % Sample rate
     f = Fs*(0:(L/2))/L;             % Frequency vector
     %w = hanning(L);                 % Window function
-    w = 1;                          % Without window function
+    w = 1;                          % Without window functions
     Y = fft(w.*(origin-offset));     % FFT
     P = 2*abs(Y(2:size(Y)/2+2));    % Get half of result
     
