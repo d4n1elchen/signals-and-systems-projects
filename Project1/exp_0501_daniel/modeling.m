@@ -1,11 +1,12 @@
-clc; clear;
 
 name = {'acrylic', 'al_ruler', 'spoon'};
-k = 1;
+k = 2;
+N = 3;
 
+d = zeros(251, 3, N);
 for k=1:3
 figure;
-for i=1:3
+for i=1:N
     data = load(['cut_ironcup_', name{k}, '_', num2str(i), '.txt']);
     time = data(:,1)-data(1,1);
     origin = data(:,2);
@@ -17,7 +18,7 @@ for i=1:3
 
     % Plot original data
     subplot(3,2,(i-1)*2+1);
-    plot(time, filtered);
+    plot(filtered);
     title([name{k}, num2str(i), ' Original Data'],'Interpreter','none');
     ylabel('Amplitude');
     
@@ -29,12 +30,23 @@ for i=1:3
     w = 1;                          % Without window functions
     Y = fft(w.*(filtered));     % FFT
     P = log(2*abs(Y(2:size(Y)/2+2)));    % Get half of result
-    
     [pks,locs] = findpeaks(P,'MinPeakDistance',length(P)/5);
+    d(:,k,i) = P;
     
     subplot(3,2,(i-1)*2+2);
     plot(f, P, f(locs), pks, 'or');
     title([name{k}, num2str(i), ' FFT'],'Interpreter','none');
     ylabel('Amplitude');
 end
+end
+
+th = zeros(9,9);
+for i=1:3
+    for j=1:3
+        for k=1:3
+            for l=1:3
+                th(3*(i-1)+j,3*(k-1)+l) = dot(d(:,i,j),d(:,k,l))/(norm(d(:,i,j)*norm(d(:,k,l))));
+            end
+        end
+    end
 end
