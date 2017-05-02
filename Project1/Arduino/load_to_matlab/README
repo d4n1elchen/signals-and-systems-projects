@@ -1,0 +1,5 @@
+This fragment illustrates a real time signal loading from arduino to matlab ploting.
+
+Arduino support need to be installed onto your matlab before processing, simply click the link after entering arduino in the command line.
+
+Com number and board might diverse so please be well checked before putting your hands on.
