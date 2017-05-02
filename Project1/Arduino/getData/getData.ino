@@ -43,12 +43,15 @@ void loop() {
   /*   } */
   /* } */
   if(Serial.available() > 0) {
-    String r = Serial.readString();
-    if(r=="START") {
-      status = START;
-      start_time = micros();
-    } else if(r=="STOP") {
-      status = STOP;
+    int r = Serial.read();
+    switch(r) {
+      case 'S':
+        status = START;
+        start_time = micros();
+        break;
+      case 'P':
+        status = STOP;
+        break;
     }
   }
   switch(status) {

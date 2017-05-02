@@ -1,7 +1,7 @@
-a = arduino('com3', 'uno');
+a = arduino;
 % com number need to be confirmed every time connected to arduino
 % the data
-     nt=5; % <- traces
+     nt=10; % <- traces
      np=100; % <- data/trace
 % prepare the plot
      axes('xlim',[1,np],'ylim',[0,5]);
@@ -24,3 +24,4 @@ for i = 1:nt*np
     %set(lb,'xdata',[ix,ix]);
     pause(.0001); 
 end
+clear a;
