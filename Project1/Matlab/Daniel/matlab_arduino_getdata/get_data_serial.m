@@ -3,7 +3,7 @@ if exist('s','var')
 end
 clc; clear;
 
-filename = 'ironcup_al_ruler_9.txt';
+filename = 'glass_chopstick_20.txt';
 
 s = serial('COM3');
 set(s,'DataBits',8);
@@ -16,6 +16,7 @@ pause(3);
 frameSize = 1000;
 step = 100;
 dt = [];
+tt = [];
 time = [];
 data = [];
 
@@ -24,23 +25,27 @@ fwrite(s,'S');
 L = 0;
 while L < step
     d = fscanf(s,'# %f %f\n');
-    dt = [dt d(2)-3.115];
+    tt = [tt; d(1)];
+    dt = [dt; d(2)];
     L = L+1;
 end
 disp('Knock!');
-while var(dt)<2e-4
+while peak2peak(dt)<=0.04
     L = 0;
     while L < step
         d = fscanf(s,'# %f %f\n');
-        dt = [dt d(2)-3.115];
+        tt = [tt(2:end); d(1)];
+        dt = [dt(2:end); d(2)];
         L = L+1;
     end
 end
-L = 0;
+offset = median(dt);
+time = [time; tt];
+data = [data; dt-offset];
 while L < frameSize
     d = fscanf(s,'# %f %f\n');
     time = [time; d(1)];
-    data = [data; d(2)-3.115];
+    data = [data; d(2)-offset];
     L = L+1;
 end
 flushinput(s);
@@ -49,7 +54,7 @@ toc;
 
 time = time-time(1);
 
-figure;
+% figure;
 var(data)
 plot(data);
 % a = 0.95;
